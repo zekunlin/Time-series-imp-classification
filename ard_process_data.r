@@ -1,7 +1,7 @@
 getwd()
-data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period2/"
-data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period1/test/"
-list.files(data_repo, pattern=".part")
+#data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period2/"
+data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period1/"
+
 library(raster)
 B1 <- list.files(data_repo, pattern = "SRB1", full.names = T)
 B2 <- list.files(data_repo, pattern = "SRB2", full.names = T)
