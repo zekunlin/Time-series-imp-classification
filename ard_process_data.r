@@ -1,27 +1,24 @@
 getwd()
-#data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period2/"
-data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period2/"
-
 library(raster)
-library(stringr)
-library(matrixStats)
+
 library(ncdf4)
 library(foreach)
 library(doParallel)
-## explore and store data in netcdf format
 
+data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period2/"
+
+## explore and store data in netcdf format
 b1 <- list.files(data_repo, pattern = "^.*SRB1.*", full.names = T)
 b2 <- list.files(data_repo, pattern = "^.*SRB2.*", full.names = T)
 b3 <- list.files(data_repo, pattern = "^.*SRB3.*", full.names = T)
 b4 <- list.files(data_repo, pattern = "^.*SRB4.*", full.names = T)
 b5 <- list.files(data_repo, pattern = "^.*SRB5.*", full.names = T)
 b7 <- list.files(data_repo, pattern = "^.*SRB7.*", full.names = T)
-bqa <- list.files(data_repo, pattern = "^.*PIXELQA.*", full.names = T)
+bqa <- list.files(data_repo, pattern = "^.*PIXELQA.doy*", full.names = T)
 
-cores=detectCores()
-cl <- makeCluster(cores[1]-1) #not to overload your computer
-registerDoParallel(cl)
-foreach(yr = 1995:2011) %dopar% {
+
+for(yr in 1993:2011) {
+    
     b1 <- list.files(data_repo, pattern = paste("^.*SRB1.doy", yr, sep = ""), full.names = TRUE)
     b2 <- list.files(data_repo, pattern = paste("^.*SRB2.doy", yr, sep = ""), full.names = TRUE)
     b3 <- list.files(data_repo, pattern = paste("^.*SRB3.doy", yr, sep = ""), full.names = TRUE)
@@ -46,8 +43,8 @@ foreach(yr = 1995:2011) %dopar% {
     qa.array <- array(qa_stack, dim = dim(qa_stack))
 
    
-    lon <- xFromCol(b1.layer1)
-    lat <- yFromRow(b1.layer1)
+    lon <- xFromCol(b1_stack)
+    lat <- yFromRow(b1_stack)
     time <- str_extract(b1, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
     crs.info <- as.character(crs(b1_stack))
     extent.info <-  extent(b1_stack)
@@ -94,7 +91,6 @@ foreach(yr = 1995:2011) %dopar% {
 
     nc_close(ncout)
 }
-stopCluster(cl)
 
 ncf <- nc_open(file_name)
 nc_close(ncf)
