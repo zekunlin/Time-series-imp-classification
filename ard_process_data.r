@@ -1,11 +1,11 @@
 getwd()
 library(raster)
-
+library(stringr)
 library(ncdf4)
 library(foreach)
 library(doParallel)
 
-data_repo <- "D:/Zekun/Landsat_ARD/Landsat_ARD/wake_ard_period2/"
+data_repo <- "D:/Zekun/landsat_ard_data/wake_ard_period2/wake_ard_period2/"
 
 ## explore and store data in netcdf format
 b1 <- list.files(data_repo, pattern = "^.*SRB1.*", full.names = T)
